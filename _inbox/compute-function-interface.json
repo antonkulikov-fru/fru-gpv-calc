@@ -1,0 +1,128 @@
+{
+    "compute_function_spec": {
+        "name": "compute_gpv_impact",
+        "version": "1.0.0",
+        "purity": "pure",
+        "determinism": "deterministic",
+        "idempotent": true,
+        "input": {
+            "description": "Fully validated ScenarioState JSON",
+            "schema_ref": "gpv-impact-calculator.state.schema.json",
+            "constraints": [
+                "Ajv-validated",
+                "No derived fields present",
+                "Model-data mode only (Phase 1)"
+            ]
+        },
+        "output": {
+            "type": "object",
+            "required": [
+                "computed_outputs",
+                "computation_trace",
+                "warnings"
+            ],
+            "computed_outputs": {
+                "type": "object",
+                "required": [
+                    "gpv",
+                    "fundraiseup_revenue",
+                    "org_net_proceeds"
+                ],
+                "properties": {
+                    "gpv": {
+                        "by_cadence": {
+                            "ONE_TIME": "number",
+                            "RECURRING": "number"
+                        },
+                        "total": "number"
+                    },
+                    "fundraiseup_revenue": {
+                        "total": "number"
+                    },
+                    "org_net_proceeds": {
+                        "total": "number"
+                    }
+                }
+            },
+            "computation_trace": {
+                "type": "array",
+                "description": "Ordered, layer-by-layer derivation steps",
+                "items": {
+                    "type": "object",
+                    "required": [
+                        "layer",
+                        "entity",
+                        "metric",
+                        "formula",
+                        "inputs",
+                        "output"
+                    ],
+                    "properties": {
+                        "layer": {
+                            "enum": [
+                                "IntentFormation",
+                                "IntentCapture",
+                                "DonationExecution",
+                                "ValueRealization"
+                            ]
+                        },
+                        "entity": {
+                            "description": "Org / Channel / Surface / DonationModel identifier",
+                            "type": "string"
+                        },
+                        "metric": {
+                            "type": "string"
+                        },
+                        "formula": {
+                            "type": "string"
+                        },
+                        "inputs": {
+                            "type": "object",
+                            "additionalProperties": true
+                        },
+                        "output": {
+                            "type": [
+                                "number",
+                                "object"
+                            ]
+                        }
+                    }
+                }
+            },
+            "warnings": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": [
+                        "code",
+                        "message"
+                    ],
+                    "properties": {
+                        "code": {
+                            "enum": [
+                                "UNALLOCATED_DISTRIBUTION",
+                                "ZERO_ACTIVE_ORGS",
+                                "ZERO_EXECUTION_PATH",
+                                "UNSUPPORTED_DONATION_MODEL"
+                            ]
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "example_trace_step": {
+            "layer": "DonationExecution",
+            "entity": "ORG_123 | CAMPAIGN | RECURRING",
+            "metric": "DonorMonths_Existing_REC",
+            "formula": "existing_rec_donors_start * expected_active_months",
+            "inputs": {
+                "existing_rec_donors_start": 1000,
+                "expected_active_months": 8.7
+            },
+            "output": 8700
+        }
+    }
+}

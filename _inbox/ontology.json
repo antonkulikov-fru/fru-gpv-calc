@@ -1,0 +1,168 @@
+{
+    "domain_model": {
+        "name": "FundraiseUp Donation Domain Model",
+        "version": "0.1",
+        "description": "Canonical ontology describing how donor intent is formed, captured, executed, and realized across channels, execution surfaces, donation models, and partners.",
+        "ontology_principles": {
+            "channels_are_contexts": true,
+            "channels_are_not_technical": true,
+            "execution_surfaces_are_technical": true,
+            "execution_surfaces_do_not_create_intent": true,
+            "donation_models_are_orthogonal": true,
+            "fundraiseup_does_not_own_channels": true
+        },
+        "core_actors": {
+            "cause": {
+                "description": "A mission, need, or obligation that creates donor intent."
+            },
+            "donor": {
+                "description": "An individual or entity that executes donation intent."
+            },
+            "organization": {
+                "description": "A nonprofit organization that collects proceeds and delivers impact."
+            }
+        },
+        "layers": {
+            "intent_formation": {
+                "description": "Psychological and social processes through which donor intent emerges."
+            },
+            "intent_capture": {
+                "description": "Contexts in which donor intent is captured and routed toward execution."
+            },
+            "donation_execution": {
+                "description": "Technical execution of captured donor intent into a transaction.",
+                "owned_by_fundraiseup": true
+            },
+            "value_realization": {
+                "description": "Realization of executed donations as proceeds, insights, and long-term donor value.",
+                "owned_by_fundraiseup": true
+            }
+        },
+        "channels": {
+            "definition": "High-level contexts where donor intent is captured. Channels are abstract and non-technical. Channels are owned by organizations.",
+            "types": [
+                "online",
+                "offline",
+                "phone",
+                "direct_mail"
+            ]
+        },
+        "execution_surfaces": {
+            "definition": "Technical environments where donor intent is executed as a donation transaction.",
+            "types": [
+                "website",
+                "donor_portal",
+                "mobile_app",
+                "virtual_terminal",
+                "api"
+            ]
+        },
+        "channel_to_surface_mapping": {
+            "description": "Channels may route captured intent to one or more execution surfaces.",
+            "examples": {
+                "online": [
+                    "website",
+                    "mobile_app",
+                    "donor_portal"
+                ],
+                "offline": [
+                    "virtual_terminal",
+                    "mobile_app"
+                ],
+                "phone": [
+                    "virtual_terminal"
+                ],
+                "direct_mail": [
+                    "website",
+                    "donor_portal"
+                ]
+            }
+        },
+        "donation_models": {
+            "definition": "The psychological, social, and organizational structure that defines the minimal required actors, intent mediation, attribution, and resulting relationships for a donation to be realized, independent of channel, execution surface, or payment method.",
+            "models": {
+                "campaign": {
+                    "intent_mediation": "cause_support",
+                    "required_actors": [
+                        "donor",
+                        "organization"
+                    ],
+                    "attribution": "organization_or_campaign",
+                    "relationship_persistence": "optional"
+                },
+                "peer_to_peer": {
+                    "intent_mediation": "social_intermediation",
+                    "required_actors": [
+                        "donor",
+                        "individual_fundraiser",
+                        "organization"
+                    ],
+                    "attribution": "individual_and_organization",
+                    "relationship_persistence": "dual"
+                },
+                "membership": {
+                    "intent_mediation": "belonging_or_entitlement",
+                    "required_actors": [
+                        "donor",
+                        "organization"
+                    ],
+                    "attribution": "membership_status",
+                    "relationship_persistence": "ongoing"
+                },
+                "giving_cart": {
+                    "intent_mediation": "designation_of_impact_units",
+                    "required_actors": [
+                        "donor",
+                        "organization",
+                        "designated_items"
+                    ],
+                    "attribution": "item_level",
+                    "relationship_persistence": "fulfillment_based"
+                },
+                "zakat_calculator": {
+                    "intent_mediation": "rule_based_obligation",
+                    "required_actors": [
+                        "obligated_donor",
+                        "eligible_beneficiaries",
+                        "organization"
+                    ],
+                    "attribution": "obligation_fulfillment",
+                    "relationship_persistence": "optional"
+                }
+            }
+        },
+        "contribution_cadence": {
+            "definition": "Temporal pattern of giving.",
+            "types": [
+                "one_time",
+                "recurring",
+                "calendar_bound"
+            ]
+        },
+        "providers_and_partners": {
+            "definition": "External systems fulfilling specialized sub-functions.",
+            "categories": {
+                "payment_processors": [
+                    "Stripe",
+                    "PayPal"
+                ],
+                "daf_providers": [
+                    "DAFpay"
+                ],
+                "employer_matching": [
+                    "Employer_matching_providers"
+                ],
+                "canvassing_vendors": [
+                    "Third_party_canvassing_vendors"
+                ]
+            }
+        },
+        "fundraiseup_role": {
+            "description": "The orchestration plane that normalizes donation execution and value realization across execution surfaces, donation models, and partners.",
+            "explicit_non_goals": [
+                "owning_channels",
+                "replacing_organizational_crms"
+            ]
+        }
+    }
+}

@@ -1,0 +1,120 @@
+{
+    "fe_component_map": {
+        "root": {
+            "component": "ScenarioWorkspace",
+            "schema_binding": "ScenarioState",
+            "children": [
+                "ScenarioHeader",
+                "LayerNavigator",
+                "LayerPanel",
+                "OutputsPanel",
+                "DeltaPanel"
+            ]
+        },
+        "ScenarioHeader": {
+            "schema_binding": "Scenario",
+            "components": [
+                {
+                    "component": "ScenarioSelector",
+                    "binds_to": "scenario.scenario_id"
+                },
+                {
+                    "component": "ScenarioModeBadge",
+                    "binds_to": "scenario.mode"
+                },
+                {
+                    "component": "TimeHorizonSelector",
+                    "binds_to": "scenario.time_horizon_id"
+                }
+            ]
+        },
+        "LayerNavigator": {
+            "type": "navigation",
+            "layers": [
+                "IntentFormation",
+                "IntentCapture",
+                "DonationExecution",
+                "ValueRealization"
+            ]
+        },
+        "LayerPanel": {
+            "dynamic": true,
+            "children": {
+                "IntentFormation": {
+                    "schema_binding": [
+                        "inputs.intent_formation",
+                        "inputs.org_activation_funnel",
+                        "inputs.intent_attribution"
+                    ],
+                    "components": [
+                        "VerticalIntentTable",
+                        "OrgActivationFunnelEditor",
+                        "OrgIntentAttributionTable"
+                    ]
+                },
+                "IntentCapture": {
+                    "schema_binding": [
+                        "inputs.channel_mix",
+                        "inputs.surface_mix",
+                        "inputs.donation_model_mix",
+                        "inputs.cr1"
+                    ],
+                    "components": [
+                        "ChannelEnablementMatrix",
+                        "ChannelDistributionEditor",
+                        "SurfaceDistributionEditor",
+                        "DonationModelDistributionEditor",
+                        "CR1Editor"
+                    ]
+                },
+                "DonationExecution": {
+                    "schema_binding": [
+                        "inputs.cadence_split",
+                        "inputs.cr2",
+                        "inputs.donation_amount",
+                        "inputs.existing_recurring_donors",
+                        "inputs.recurring_churn_model",
+                        "inputs.recurring_seasonality_model"
+                    ],
+                    "components": [
+                        "CadenceSplitEditor",
+                        "CR2Editor",
+                        "DonationAmountEditor",
+                        "ExistingRecurringDonorsEditor",
+                        "RecurringChurnTable",
+                        "RecurringSeasonalityTable"
+                    ]
+                },
+                "ValueRealization": {
+                    "schema_binding": [
+                        "inputs.processor_fees",
+                        "inputs.fee_coverage",
+                        "inputs.commission"
+                    ],
+                    "components": [
+                        "ProcessorFeesEditor",
+                        "FeeCoverageEditor",
+                        "CommissionEditor"
+                    ]
+                }
+            }
+        },
+        "OutputsPanel": {
+            "schema_binding": "ComputedOutputs",
+            "components": [
+                "GPVSummary",
+                "RevenueSummary",
+                "OrgNetProceedsSummary",
+                "TimeHorizonBreakdown"
+            ]
+        },
+        "DeltaPanel": {
+            "schema_binding": "ComputedDelta",
+            "components": [
+                "DeltaSummary",
+                "DeltaByLayer"
+            ],
+            "visibility_rule": "scenario.baseline_scenario_id != null"
+        }
+    }
+}

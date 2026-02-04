@@ -1,0 +1,338 @@
+{
+    "spec_version": "1.0.0",
+    "name": "GPV Impact Calculator",
+    "status": "frozen_pass_A_data_schema_and_formulas",
+    "scope": {
+        "phases_supported": [
+            "PHASE_1_MODEL_DATA",
+            "PHASE_2_ORG_DATA"
+        ],
+        "computation_unit": "org_id",
+        "aggregation_rule": "all higher-level views are sums over org_id"
+    },
+    "design_invariants": [
+        "Org_ID is the atomic computational unit in all layers.",
+        "Vertical is a pure aggregation over orgs; never an independent computation path.",
+        "All math is linear and compositional; no hidden or implicit functions.",
+        "All rates are applied exactly once at the correct layer.",
+        "Recurring is modeled as expected calendar-year exposure, not end-of-year survival.",
+        "No double counting: each unit of intent/opportunity/transaction flows through exactly one path."
+    ],
+    "time_horizons": {
+        "supported": [
+            {
+                "id": "CY",
+                "description": "Single calendar year (default baseline horizon).",
+                "years": 1,
+                "months": 12
+            },
+            {
+                "id": "CY_PLUS_1",
+                "description": "Current calendar year plus one additional year (CY, CY+1).",
+                "years": 2,
+                "months_per_year": 12
+            },
+            {
+                "id": "CY_PLUS_2",
+                "description": "Current calendar year plus two additional years (CY, CY+1, CY+2).",
+                "years": 3,
+                "months_per_year": 12
+            },
+            {
+                "id": "ROLLING_2M",
+                "description": "Optional rolling two-month horizon.",
+                "months": 2,
+                "phase": "optional"
+            }
+        ],
+        "defaults": {
+            "default_time_horizon_id": "CY",
+            "months_per_year": 12
+        }
+    },
+    "units": {
+        "intent_units": "abstract_intent_units_per_year",
+        "org_count": "count",
+        "donor_count": "count",
+        "donor_months": "donor_months",
+        "opportunities": "donation_opportunities",
+        "transactions": "successful_transactions",
+        "currency": "usd_equivalent",
+        "rate": "0_to_1"
+    },
+    "dimensions": {
+        "vertical_id": "string",
+        "org_id": "string",
+        "channel_id": "string",
+        "surface_id": "string",
+        "donation_model_id": "string",
+        "cadence": [
+            "ONE_TIME",
+            "RECURRING"
+        ],
+        "scenario_id": "string"
+    },
+    "entities": {
+        "Scenario": {
+            "primary_key": "scenario_id",
+            "fields": {
+                "scenario_id": "string",
+                "mode": [
+                    "MODEL_DATA",
+                    "ORG_DATA"
+                ],
+                "time_horizon_id": [
+                    "CY",
+                    "CY_PLUS_1",
+                    "CY_PLUS_2",
+                    "ROLLING_2M"
+                ],
+                "label": "string",
+                "baseline_scenario_id": "string|null"
+            }
+        },
+        "Vertical": {
+            "primary_key": "vertical_id",
+            "fields": {
+                "vertical_id": "string",
+                "name": "string"
+            }
+        },
+        "Org": {
+            "primary_key": "org_id",
+            "fields": {
+                "org_id": "string",
+                "vertical_id": "string",
+                "archetype_id": "string|null",
+                "weight": "number(rate)"
+            }
+        },
+        "OrgActivationState": {
+            "description": "State of organization activation at the start of the selected time horizon.",
+            "inputs": {
+                "ExistingActiveOrgs_Start": {
+                    "type": "integer",
+                    "unit": "orgs",
+                    "description": "Number of orgs already active at the start of the horizon."
+                }
+            }
+        },
+        "IntentFormation": {
+            "primary_key": "vertical_id",
+            "fields": {
+                "vertical_id": "string",
+                "intent_tam": "number(intent_units)",
+                "orgs_sam_total": "number(org_count)"
+            }
+        },
+        "OrgActivationFunnel": {
+            "primary_key": "vertical_id",
+            "fields": {
+                "scenario_id": "string",
+                "vertical_id": "string",
+                "orgs_total": "number(org_count)",
+                "orgs_reached": "number(org_count)",
+                "cr_reached_to_qualified": "number(rate)",
+                "orgs_qualified": "number(org_count)",
+                "cr_qualified_to_won": "number(rate)",
+                "orgs_closed_won": "number(org_count)",
+                "provenance": [
+                    "modeled",
+                    "observed",
+                    "overridden"
+                ]
+            }
+        },
+        "IntentAttribution": {
+            "primary_key": "org_id",
+            "fields": {
+                "scenario_id": "string",
+                "org_id": "string",
+                "intent_share_within_vertical": "number(rate)",
+                "provenance": [
+                    "assumed",
+                    "observed",
+                    "overridden"
+                ]
+            }
+        },
+        "ChannelMix": {
+            "primary_key": "org_id_channel_id",
+            "fields": {
+                "scenario_id": "string",
+                "org_id": "string",
+                "channel_id": "string",
+                "share": "number(rate)",
+                "enabled": "boolean"
+            }
+        },
+        "SurfaceMix": {
+            "primary_key": "org_id_channel_id_surface_id",
+            "fields": {
+                "scenario_id": "string",
+                "org_id": "string",
+                "channel_id": "string",
+                "surface_id": "string",
+                "share": "number(rate)",
+                "enabled": "boolean"
+            }
+        },
+        "DonationModelMix": {
+            "primary_key": "org_id_surface_id_donation_model_id",
+            "fields": {
+                "scenario_id": "string",
+                "org_id": "string",
+                "surface_id": "string",
+                "donation_model_id": "string",
+                "share": "number(rate)",
+                "enabled": "boolean"
+            }
+        },
+        "CR1": {
+            "primary_key": "surface_id_donation_model_id",
+            "fields": {
+                "scenario_id": "string",
+                "surface_id": "string",
+                "donation_model_id": "string",
+                "cr1_intent_to_opportunity": "number(rate)"
+            }
+        },
+        "CadenceSplit": {
+            "primary_key": "donation_model_id",
+            "fields": {
+                "scenario_id": "string",
+                "donation_model_id": "string",
+                "share_one_time": "number(rate)",
+                "share_recurring": "number(rate)"
+            }
+        },
+        "CR2": {
+            "primary_key": "donation_model_id_cadence",
+            "fields": {
+                "scenario_id": "string",
+                "donation_model_id": "string",
+                "cadence": [
+                    "ONE_TIME",
+                    "RECURRING"
+                ],
+                "cr2_opportunity_to_donation": "number(rate)"
+            }
+        },
+        "DonationAmount": {
+            "primary_key": "donation_model_id_cadence",
+            "fields": {
+                "scenario_id": "string",
+                "donation_model_id": "string",
+                "cadence": [
+                    "ONE_TIME",
+                    "RECURRING"
+                ],
+                "avg_amount": "number(currency)"
+            }
+        },
+        "ExistingRecurringDonors": {
+            "primary_key": "org_id_donation_model_id",
+            "fields": {
+                "scenario_id": "string",
+                "org_id": "string",
+                "donation_model_id": "string",
+                "existing_rec_donors_start_cy": "number(donor_count)",
+                "provenance": [
+                    "assumed",
+                    "observed",
+                    "overridden"
+                ]
+            }
+        },
+        "RecurringChurn": {
+            "primary_key": "month",
+            "fields": {
+                "scenario_id": "string",
+                "month": "integer(1-12)",
+                "survival_at_start_of_month": "number(rate)"
+            }
+        },
+        "RecurringSeasonality": {
+            "primary_key": "month",
+            "fields": {
+                "scenario_id": "string",
+                "month": "integer(1-12)",
+                "seasonality_weight": "number(rate)"
+            }
+        },
+        "ProcessorFees": {
+            "primary_key": "channel_id_cadence",
+            "fields": {
+                "scenario_id": "string",
+                "channel_id": "string",
+                "cadence": [
+                    "ONE_TIME",
+                    "RECURRING"
+                ],
+                "processor_fee_rate": "number(rate)"
+            }
+        },
+        "FeeCoverage": {
+            "primary_key": "channel_id",
+            "fields": {
+                "scenario_id": "string",
+                "channel_id": "string",
+                "donor_fee_coverage_rate": "number(rate)"
+            }
+        },
+        "Commission": {
+            "primary_key": "scenario_id",
+            "fields": {
+                "scenario_id": "string",
+                "avg_fundraiseup_commission_rate": "number(rate)"
+            }
+        }
+    },
+    "derived_metrics_and_formulas": {
+        "derived_org_metrics": {
+            "OrgsQualified": "orgs_reached * cr_reached_to_qualified",
+            "OrgsClosedWon": "orgs_qualified * cr_qualified_to_won",
+            "NewActiveOrgs": {
+                "model_data": "orgs_closed_won",
+                "org_data": "observed_new_active_orgs"
+            }
+        },
+        "IntentExposed": "intent_tam * intent_share_within_vertical",
+        "TotalIntentExposedToFRU": {
+            "definition": "SUM(IntentExposed(org_id)) WHERE org_id ∈ ActiveOrgs",
+            "scope": "scenario_level",
+            "materialization": "derived_only"
+        },
+        "CapturedIntent": "IntentExposed * channel_share * surface_share * donation_model_share",
+        "DonationOpportunities": "CapturedIntent * cr1_intent_to_opportunity",
+        "OneTimeTransactions": "DonationOpportunities * share_one_time * cr2_opportunity_to_donation",
+        "NewRecurringDonors": "DonationOpportunities * share_recurring * cr2_opportunity_to_donation",
+        "REC_CY_Avg_Active_Fraction": "AVERAGE(survival_at_start_of_month[1..12])",
+        "REC_CY_Expected_Active_Months": "months_per_year * REC_CY_Avg_Active_Fraction",
+        "REC_Expected_Charges_New": "SUM(seasonality_weight_m * months_remaining_m)",
+        "DonorMonths_Existing_REC": "existing_rec_donors_start_cy * REC_CY_Expected_Active_Months",
+        "DonorMonths_New_REC": "NewRecurringDonors * REC_Expected_Charges_New * REC_CY_Avg_Active_Fraction",
+        "GPV_OneTime": "OneTimeTransactions * avg_amount_ONE_TIME",
+        "GPV_Recurring": "(DonorMonths_Existing_REC + DonorMonths_New_REC) * avg_amount_RECURRING",
+        "GPV_Total": "GPV_OneTime + GPV_Recurring",
+        "ProcessorFeesPaid": "GPV_Total * processor_fee_rate * (1 - donor_fee_coverage_rate)",
+        "FundraiseUpRevenue": "GPV_Total * avg_fundraiseup_commission_rate",
+        "OrgNetProceeds": "GPV_Total - ProcessorFeesPaid - FundraiseUpRevenue"
+    },
+    "aggregation_rules": {
+        "org_level": "All derived metrics are computed per org_id.",
+        "vertical_level": "SUM of org-level metrics where org.vertical_id matches.",
+        "scenario_level": "SUM of all org-level metrics in scenario.",
+        "weighting": "If org.weight != 1.0, multiply org outputs by weight before aggregation."
+    },
+    "constraints": {
+        "distribution_sums": [
+            "SUM(ChannelMix.share) == 1 per org",
+            "SUM(SurfaceMix.share) == 1 per org+channel",
+            "SUM(DonationModelMix.share) == 1 per org+surface",
+            "share_one_time + share_recurring == 1"
+        ],
+        "rate_bounds": "All rates must be between 0 and 1 inclusive.",
+        "non_negativity": "All counts, donor_months, and currency values must be >= 0."
+    }
+}
