@@ -1,0 +1,858 @@
+{
+    "scenario": {
+        "scenarioId": "baseline-campaign",
+        "mode": "MODEL_DATA",
+        "timeHorizonId": "CY",
+        "label": "Baseline Campaign",
+        "baselineScenarioId": null
+    },
+    "entities": {
+        "verticals": [
+            {
+                "verticalId": "cause_cure",
+                "name": "Cause & Cure"
+            },
+            {
+                "verticalId": "faith",
+                "name": "Faith"
+            }
+        ],
+        "orgs": [
+            {
+                "orgId": "org-cause",
+                "verticalId": "cause_cure",
+                "archetypeId": null,
+                "weight": 1
+            },
+            {
+                "orgId": "org-faith",
+                "verticalId": "faith",
+                "archetypeId": null,
+                "weight": 1
+            }
+        ],
+        "channels": [
+            {
+                "channelId": "online",
+                "name": "Online"
+            },
+            {
+                "channelId": "offline",
+                "name": "Offline"
+            },
+            {
+                "channelId": "phone",
+                "name": "Phone"
+            },
+            {
+                "channelId": "direct_mail",
+                "name": "Direct Mail"
+            }
+        ],
+        "surfaces": [
+            {
+                "surfaceId": "website",
+                "name": "Website"
+            },
+            {
+                "surfaceId": "donor_portal",
+                "name": "Donor Portal"
+            },
+            {
+                "surfaceId": "mobile_app",
+                "name": "Mobile App"
+            },
+            {
+                "surfaceId": "virtual_terminal",
+                "name": "Virtual Terminal"
+            },
+            {
+                "surfaceId": "api",
+                "name": "API"
+            }
+        ],
+        "donationModels": [
+            {
+                "donationModelId": "campaign",
+                "name": "Campaign"
+            }
+        ]
+    },
+    "inputs": {
+        "intentFormation": [
+            {
+                "verticalId": "cause_cure",
+                "intentTam": 100000000,
+                "orgsSamTotal": 1000
+            },
+            {
+                "verticalId": "faith",
+                "intentTam": 50000000,
+                "orgsSamTotal": 500
+            }
+        ],
+        "orgActivationFunnel": [
+            {
+                "verticalId": "cause_cure",
+                "orgsTotal": 1000,
+                "orgsReached": 100,
+                "crReachedToQualified": 0.2,
+                "crQualifiedToWon": 0.45
+            },
+            {
+                "verticalId": "faith",
+                "orgsTotal": 500,
+                "orgsReached": 50,
+                "crReachedToQualified": 0.2,
+                "crQualifiedToWon": 0.45
+            }
+        ],
+        "intentAttribution": [
+            {
+                "orgId": "org-cause",
+                "intentShareWithinVertical": 1
+            },
+            {
+                "orgId": "org-faith",
+                "intentShareWithinVertical": 1
+            }
+        ],
+        "channelMix": [
+            {
+                "orgId": "org-cause",
+                "channelId": "online",
+                "share": 0.8,
+                "enabled": true
+            },
+            {
+                "orgId": "org-cause",
+                "channelId": "offline",
+                "share": 0.2,
+                "enabled": true
+            },
+            {
+                "orgId": "org-cause",
+                "channelId": "phone",
+                "share": 0,
+                "enabled": true
+            },
+            {
+                "orgId": "org-cause",
+                "channelId": "direct_mail",
+                "share": 0,
+                "enabled": true
+            },
+            {
+                "orgId": "org-faith",
+                "channelId": "online",
+                "share": 0.8,
+                "enabled": true
+            },
+            {
+                "orgId": "org-faith",
+                "channelId": "offline",
+                "share": 0.2,
+                "enabled": true
+            },
+            {
+                "orgId": "org-faith",
+                "channelId": "phone",
+                "share": 0,
+                "enabled": true
+            },
+            {
+                "orgId": "org-faith",
+                "channelId": "direct_mail",
+                "share": 0,
+                "enabled": true
+            }
+        ],
+        "surfaceMix": [
+            {
+                "orgId": "org-cause",
+                "channelId": "online",
+                "surfaceId": "website",
+                "share": 0.9,
+                "enabled": true
+            },
+            {
+                "orgId": "org-cause",
+                "channelId": "online",
+                "surfaceId": "donor_portal",
+                "share": 0.1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-cause",
+                "channelId": "offline",
+                "surfaceId": "mobile_app",
+                "share": 1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-cause",
+                "channelId": "phone",
+                "surfaceId": "virtual_terminal",
+                "share": 1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-cause",
+                "channelId": "direct_mail",
+                "surfaceId": "api",
+                "share": 1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-faith",
+                "channelId": "online",
+                "surfaceId": "website",
+                "share": 0.9,
+                "enabled": true
+            },
+            {
+                "orgId": "org-faith",
+                "channelId": "online",
+                "surfaceId": "donor_portal",
+                "share": 0.1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-faith",
+                "channelId": "offline",
+                "surfaceId": "mobile_app",
+                "share": 1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-faith",
+                "channelId": "phone",
+                "surfaceId": "virtual_terminal",
+                "share": 1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-faith",
+                "channelId": "direct_mail",
+                "surfaceId": "api",
+                "share": 1,
+                "enabled": true
+            }
+        ],
+        "donationModelMix": [
+            {
+                "orgId": "org-cause",
+                "surfaceId": "website",
+                "donationModelId": "campaign",
+                "share": 1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "donor_portal",
+                "donationModelId": "campaign",
+                "share": 1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "mobile_app",
+                "donationModelId": "campaign",
+                "share": 1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "virtual_terminal",
+                "donationModelId": "campaign",
+                "share": 1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "api",
+                "donationModelId": "campaign",
+                "share": 1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "website",
+                "donationModelId": "campaign",
+                "share": 1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "donor_portal",
+                "donationModelId": "campaign",
+                "share": 1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "mobile_app",
+                "donationModelId": "campaign",
+                "share": 1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "virtual_terminal",
+                "donationModelId": "campaign",
+                "share": 1,
+                "enabled": true
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "api",
+                "donationModelId": "campaign",
+                "share": 1,
+                "enabled": true
+            }
+        ],
+        "cr1": [
+            {
+                "surfaceId": "website",
+                "donationModelId": "campaign",
+                "cr1IntentToOpportunity": 0.05
+            },
+            {
+                "surfaceId": "donor_portal",
+                "donationModelId": "campaign",
+                "cr1IntentToOpportunity": 0.05
+            },
+            {
+                "surfaceId": "mobile_app",
+                "donationModelId": "campaign",
+                "cr1IntentToOpportunity": 0.05
+            },
+            {
+                "surfaceId": "virtual_terminal",
+                "donationModelId": "campaign",
+                "cr1IntentToOpportunity": 0.05
+            },
+            {
+                "surfaceId": "api",
+                "donationModelId": "campaign",
+                "cr1IntentToOpportunity": 0.05
+            }
+        ],
+        "cadenceSplit": [
+            {
+                "donationModelId": "campaign",
+                "shareOneTime": 0.7,
+                "shareRecurring": 0.3
+            }
+        ],
+        "cr2": [
+            {
+                "orgId": "org-cause",
+                "surfaceId": "website",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "cr2OpportunityToDonation": 0.78
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "website",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "cr2OpportunityToDonation": 0.75
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "donor_portal",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "cr2OpportunityToDonation": 0.78
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "donor_portal",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "cr2OpportunityToDonation": 0.75
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "mobile_app",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "cr2OpportunityToDonation": 0.78
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "mobile_app",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "cr2OpportunityToDonation": 0.75
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "virtual_terminal",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "cr2OpportunityToDonation": 0.78
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "virtual_terminal",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "cr2OpportunityToDonation": 0.75
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "api",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "cr2OpportunityToDonation": 0.78
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "api",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "cr2OpportunityToDonation": 0.75
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "website",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "cr2OpportunityToDonation": 0.78
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "website",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "cr2OpportunityToDonation": 0.75
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "donor_portal",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "cr2OpportunityToDonation": 0.78
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "donor_portal",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "cr2OpportunityToDonation": 0.75
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "mobile_app",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "cr2OpportunityToDonation": 0.78
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "mobile_app",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "cr2OpportunityToDonation": 0.75
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "virtual_terminal",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "cr2OpportunityToDonation": 0.78
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "virtual_terminal",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "cr2OpportunityToDonation": 0.75
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "api",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "cr2OpportunityToDonation": 0.78
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "api",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "cr2OpportunityToDonation": 0.75
+            }
+        ],
+        "donationAmount": [
+            {
+                "orgId": "org-cause",
+                "surfaceId": "website",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "avgAmount": 75
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "website",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "avgAmount": 25
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "donor_portal",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "avgAmount": 75
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "donor_portal",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "avgAmount": 25
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "mobile_app",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "avgAmount": 75
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "mobile_app",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "avgAmount": 25
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "virtual_terminal",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "avgAmount": 75
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "virtual_terminal",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "avgAmount": 25
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "api",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "avgAmount": 75
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "api",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "avgAmount": 25
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "website",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "avgAmount": 75
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "website",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "avgAmount": 25
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "donor_portal",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "avgAmount": 75
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "donor_portal",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "avgAmount": 25
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "mobile_app",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "avgAmount": 75
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "mobile_app",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "avgAmount": 25
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "virtual_terminal",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "avgAmount": 75
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "virtual_terminal",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "avgAmount": 25
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "api",
+                "donationModelId": "campaign",
+                "cadence": "ONE_TIME",
+                "avgAmount": 75
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "api",
+                "donationModelId": "campaign",
+                "cadence": "RECURRING",
+                "avgAmount": 25
+            }
+        ],
+        "existingRecurringDonors": [
+            {
+                "orgId": "org-cause",
+                "surfaceId": "website",
+                "donationModelId": "campaign",
+                "existingRecDonorsStartCy": 0
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "donor_portal",
+                "donationModelId": "campaign",
+                "existingRecDonorsStartCy": 0
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "mobile_app",
+                "donationModelId": "campaign",
+                "existingRecDonorsStartCy": 0
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "virtual_terminal",
+                "donationModelId": "campaign",
+                "existingRecDonorsStartCy": 0
+            },
+            {
+                "orgId": "org-cause",
+                "surfaceId": "api",
+                "donationModelId": "campaign",
+                "existingRecDonorsStartCy": 0
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "website",
+                "donationModelId": "campaign",
+                "existingRecDonorsStartCy": 0
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "donor_portal",
+                "donationModelId": "campaign",
+                "existingRecDonorsStartCy": 0
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "mobile_app",
+                "donationModelId": "campaign",
+                "existingRecDonorsStartCy": 0
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "virtual_terminal",
+                "donationModelId": "campaign",
+                "existingRecDonorsStartCy": 0
+            },
+            {
+                "orgId": "org-faith",
+                "surfaceId": "api",
+                "donationModelId": "campaign",
+                "existingRecDonorsStartCy": 0
+            }
+        ],
+        "recurringChurnModel": [
+            {
+                "month": 1,
+                "survivalAtStartOfMonth": 0.9
+            },
+            {
+                "month": 2,
+                "survivalAtStartOfMonth": 0.9
+            },
+            {
+                "month": 3,
+                "survivalAtStartOfMonth": 0.9
+            },
+            {
+                "month": 4,
+                "survivalAtStartOfMonth": 0.9
+            },
+            {
+                "month": 5,
+                "survivalAtStartOfMonth": 0.9
+            },
+            {
+                "month": 6,
+                "survivalAtStartOfMonth": 0.9
+            },
+            {
+                "month": 7,
+                "survivalAtStartOfMonth": 0.9
+            },
+            {
+                "month": 8,
+                "survivalAtStartOfMonth": 0.9
+            },
+            {
+                "month": 9,
+                "survivalAtStartOfMonth": 0.9
+            },
+            {
+                "month": 10,
+                "survivalAtStartOfMonth": 0.9
+            },
+            {
+                "month": 11,
+                "survivalAtStartOfMonth": 0.9
+            },
+            {
+                "month": 12,
+                "survivalAtStartOfMonth": 0.9
+            }
+        ],
+        "recurringSeasonalityModel": [
+            {
+                "month": 1,
+                "seasonalityWeight": 0.0833
+            },
+            {
+                "month": 2,
+                "seasonalityWeight": 0.0833
+            },
+            {
+                "month": 3,
+                "seasonalityWeight": 0.0833
+            },
+            {
+                "month": 4,
+                "seasonalityWeight": 0.0833
+            },
+            {
+                "month": 5,
+                "seasonalityWeight": 0.0833
+            },
+            {
+                "month": 6,
+                "seasonalityWeight": 0.0833
+            },
+            {
+                "month": 7,
+                "seasonalityWeight": 0.0833
+            },
+            {
+                "month": 8,
+                "seasonalityWeight": 0.0833
+            },
+            {
+                "month": 9,
+                "seasonalityWeight": 0.0833
+            },
+            {
+                "month": 10,
+                "seasonalityWeight": 0.0833
+            },
+            {
+                "month": 11,
+                "seasonalityWeight": 0.0833
+            },
+            {
+                "month": 12,
+                "seasonalityWeight": 0.0833
+            }
+        ],
+        "processorFees": [
+            {
+                "channelId": "online",
+                "cadence": "ONE_TIME",
+                "processorFeeRate": 0.029
+            },
+            {
+                "channelId": "online",
+                "cadence": "RECURRING",
+                "processorFeeRate": 0.029
+            },
+            {
+                "channelId": "offline",
+                "cadence": "ONE_TIME",
+                "processorFeeRate": 0.035
+            },
+            {
+                "channelId": "offline",
+                "cadence": "RECURRING",
+                "processorFeeRate": 0.035
+            },
+            {
+                "channelId": "phone",
+                "cadence": "ONE_TIME",
+                "processorFeeRate": 0.035
+            },
+            {
+                "channelId": "phone",
+                "cadence": "RECURRING",
+                "processorFeeRate": 0.035
+            },
+            {
+                "channelId": "direct_mail",
+                "cadence": "ONE_TIME",
+                "processorFeeRate": 0.035
+            },
+            {
+                "channelId": "direct_mail",
+                "cadence": "RECURRING",
+                "processorFeeRate": 0.035
+            }
+        ],
+        "feeCoverage": [
+            {
+                "channelId": "online",
+                "donorFeeCoverageRate": 0.68
+            },
+            {
+                "channelId": "offline",
+                "donorFeeCoverageRate": 0.68
+            },
+            {
+                "channelId": "phone",
+                "donorFeeCoverageRate": 0.68
+            },
+            {
+                "channelId": "direct_mail",
+                "donorFeeCoverageRate": 0.68
+            }
+        ],
+        "commission": {
+            "avgFundraiseupCommissionRate": 0.035
+        }
+    }
+}
